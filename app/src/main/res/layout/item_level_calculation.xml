@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="name"
+            type="String" />
+
+        <variable
+            name="score"
+            type="Integer" />
+
+        <variable
+            name="rate"
+            type="Integer" />
+
+        <variable
+            name="colorItem"
+            type="Integer" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/dp0"
+        android:id="@+id/cardBg"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp5"
+        android:layout_weight="1"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:cardCornerRadius="@dimen/dp4"
+        app:cardElevation="@dimen/dp4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingVertical="@dimen/dp10">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text='@{"- "+ name+" -"}'
+                android:textColor="@{ContextCompat.getColor(context,colorItem)}"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp30"
+                android:text="@{String.valueOf(score)}"
+                android:textColor="@{ContextCompat.getColor(context,colorItem)}"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:tint="@{ContextCompat.getColor(context,colorItem)}"
+                    android:src="@{rate >= 1? @drawable/ic_rating : @drawable/ic_rating_normal, default = @drawable/ic_rating_normal}"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:tint="@{ContextCompat.getColor(context,colorItem)}"
+                    android:src="@{rate >= 2? @drawable/ic_rating : @drawable/ic_rating_normal, default = @drawable/ic_rating_normal}"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@{rate == 3? @drawable/ic_rating : @drawable/ic_rating_normal, default = @drawable/ic_rating_normal}"
+                    android:tint="@{ContextCompat.getColor(context,colorItem)}"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

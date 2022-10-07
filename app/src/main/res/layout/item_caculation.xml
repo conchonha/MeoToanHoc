@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="calculation"
+            type="com.example.mathtips.data.Calculation" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp5"
+            app:cardElevation="7dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="80dp">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardBg"
+                    android:layout_width="@dimen/dp70"
+                    android:layout_height="@dimen/dp70"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp5"
+                    app:cardBackgroundColor="@{ContextCompat.getColor(context,calculation.component1())}"
+                    app:cardCornerRadius="4dp">
+
+                    <ImageView
+                        android:layout_width="@dimen/dp30"
+                        android:layout_height="@dimen/dp30"
+                        android:gravity="center"
+                        android:layout_gravity="center"
+                        android:src="@{ContextCompat.getDrawable(context,calculation.component2())}" />
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/cardBg"
+                    android:layout_alignBottom="@+id/cardBg"
+                    android:layout_marginLeft="@dimen/dp10"
+                    android:layout_toRightOf="@+id/cardBg"
+                    android:gravity="center"
+                    android:text="@{calculation.component3()}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp20"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imgDrop"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@{calculation.component4()? @drawable/ic_drop_down :  @drawable/ic_drop_up ,default = @drawable/ic_drop_up}" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerItemCalculation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/dp15"
+            android:visibility="@{calculation.component4()? View.VISIBLE : View.GONE}"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+    </LinearLayout>
+</layout>
