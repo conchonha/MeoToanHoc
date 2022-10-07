@@ -20,7 +20,15 @@ class CalculationActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_calculation)
 
         val data = intent.getSerializableExtra(Constant.KEY_CALCULATION_CHILD) as CalculationChild
+        viewModel.setCalculationChild(data)
+
         val color1 = intent.getIntExtra(Constant.KEY_COLOR,R.color.plus)
         window.statusBarColor = ContextCompat.getColor(baseContext,color1)
+
+        binding.apply {
+            viewModel = this@CalculationActivity.viewModel
+            lifecycleOwner = this@CalculationActivity
+            color = color1
+        }
     }
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:background="@color/white"
+            android:text="19"
+            android:id="@+id/btn_answer_1"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp5"
+            app:layout_constraintRight_toLeftOf="@+id/btn_answer_2"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:text="19"
+            android:id="@+id/btn_answer_2"
+            app:layout_constraintTop_toTopOf="@+id/btn_answer_1"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_answer_1"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginLeft="@dimen/dp10"
+            app:layout_constraintLeft_toRightOf="@+id/btn_answer_1"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="120dp"
+            android:background="@color/white"
+            android:text="19"
+            android:id="@+id/btn_answer_3"
+            app:layout_constraintTop_toBottomOf="@+id/btn_answer_1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginLeft="@dimen/dp5"
+            android:layout_marginTop="@dimen/dp10"
+            app:layout_constraintRight_toLeftOf="@+id/btn_answer_4"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/white"
+            android:text="19"
+            android:id="@+id/btn_answer_4"
+            android:layout_marginLeft="@dimen/dp10"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_answer_3"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_answer_3"
+            app:layout_constraintLeft_toRightOf="@+id/btn_answer_3"/>
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/gropIdAnswerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="btn_answer_1,btn_answer_2,btn_answer_3,btn_answer_4"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

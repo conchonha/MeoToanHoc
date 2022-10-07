@@ -1,13 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.mathtips.ui.viewmodel.MainViewModel" />
+
+        <import type="androidx.core.content.ContextCompat" />
+
+        <variable
+            name="color"
+            type="Integer" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp20"
+            app:layout_constraintBottom_toTopOf="@+id/keyboard">
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:layout_width="match_parent"
+                android:max="100"
+                android:background="@{ContextCompat.getColor(context,color)}"
+                android:progress="@{viewModel.progress}"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_marginTop="@dimen/dp15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp5"
+                android:src="@drawable/ic_change_type"
+                android:tint="@{ContextCompat.getColor(context,color)}" />
+
+            <TextView
+                android:layout_marginTop="@dimen/dp15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="Phép nhân"
+                android:textSize="16sp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginTop="@dimen/dp15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/dp5"
+                android:layout_alignParentRight="true">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/dp10"
+                    android:paddingVertical="@dimen/dp2">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_info" />
+
+                    <TextView
+                        android:layout_width="@dimen/dp1"
+                        android:layout_height="16dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="@dimen/dp10"
+                        android:background="@color/black" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_info_1" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+        <com.example.mathtips.utils.KeyBoard
+            android:id="@+id/keyboard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp5"
+            app:answer="@{viewModel.answer}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:setKeyBoardType="@{viewModel.keyBoardType}"
+            app:setKeyboardListener="@{viewModel}" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -17,6 +17,7 @@ import kotlin.properties.Delegates
 class LevelCalculationActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLevelCalculationBinding
     private var  color1 by Delegates.notNull<Int>()
+    private lateinit var data1: CalculationChild
     private val viewModel by viewModels<MainViewModel>()
 
 
@@ -24,7 +25,7 @@ class LevelCalculationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_level_calculation)
 
-        val data = intent.getSerializableExtra(Constant.KEY_CALCULATION_CHILD) as CalculationChild
+        data1 = intent.getSerializableExtra(Constant.KEY_CALCULATION_CHILD) as CalculationChild
         color1 = intent.getIntExtra(Constant.KEY_COLOR,R.color.plus)
         window.statusBarColor = ContextCompat.getColor(baseContext,color1)
 
@@ -50,7 +51,7 @@ class LevelCalculationActivity : AppCompatActivity() {
 
     private fun sendIntent(level : String){
         startActivity(Intent(this@LevelCalculationActivity,CalculationActivity::class.java).apply {
-            putExtra(Constant.KEY_CALCULATION_CHILD,data)
+            putExtra(Constant.KEY_CALCULATION_CHILD,data1)
             putExtra(Constant.KEY_COLOR,color1)
             putExtra(Constant.KEY_LEVEL,level)
         })
