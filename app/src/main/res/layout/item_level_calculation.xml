@@ -67,21 +67,25 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:tint="@{ContextCompat.getColor(context,colorItem)}"
-                    android:src="@{rate >= 1? @drawable/ic_rating : @drawable/ic_rating_normal, default = @drawable/ic_rating_normal}"/>
+                    app:index= "@{1}"
+                    app:rate= "@{rate}"
+                    android:tint="@{ContextCompat.getColor(context,colorItem)}"/>
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    app:index= "@{2}"
+                    app:rate= "@{rate}"
                     android:tint="@{ContextCompat.getColor(context,colorItem)}"
-                    android:src="@{rate >= 2? @drawable/ic_rating : @drawable/ic_rating_normal, default = @drawable/ic_rating_normal}"/>
-
+                />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@{rate == 3? @drawable/ic_rating : @drawable/ic_rating_normal, default = @drawable/ic_rating_normal}"
-                    android:tint="@{ContextCompat.getColor(context,colorItem)}"/>
+                    app:index= "@{3}"
+                    app:rate= "@{rate}"
+                    android:tint="@{ContextCompat.getColor(context,colorItem)}"
+                    />
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>

@@ -4,11 +4,14 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../layout/custom_preview.xml" value="0.10847628657921292" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_back_finish.xml" value="0.1555" />
         <entry key="app/src/main/res/drawable-anydpi/ic_close.xml" value="0.1555" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_close_finish.xml" value="0.1545" />
         <entry key="app/src/main/res/drawable-anydpi/ic_done.xml" value="0.1555" />
         <entry key="app/src/main/res/drawable-anydpi/ic_drop_down.xml" value="0.1555" />
         <entry key="app/src/main/res/drawable-anydpi/ic_info.xml" value="0.118" />
         <entry key="app/src/main/res/drawable-anydpi/ic_info_1.xml" value="0.118" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_rating.xml" value="0.1" />
         <entry key="app/src/main/res/drawable-anydpi/ic_rating_normal.xml" value="0.1555" />
         <entry key="app/src/main/res/drawable/bg_it_text_main.xml" value="0.1555" />
         <entry key="app/src/main/res/layout/activity_calculation.xml" value="0.1" />
@@ -17,6 +20,7 @@
         <entry key="app/src/main/res/layout/activity_second.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/answer_view.xml" value="0.19610507246376813" />
         <entry key="app/src/main/res/layout/calculation_activity.xml" value="0.14479166666666668" />
+        <entry key="app/src/main/res/layout/dialog_finish_question_answer.xml" value="0.11822916666666666" />
         <entry key="app/src/main/res/layout/item_caculation.xml" value="0.14583333333333334" />
         <entry key="app/src/main/res/layout/item_caculation_child.xml" value="0.14479166666666668" />
         <entry key="app/src/main/res/layout/item_layout_main.xml" value="0.19610507246376813" />

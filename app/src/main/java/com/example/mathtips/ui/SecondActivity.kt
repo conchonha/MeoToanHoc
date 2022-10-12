@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.mathtips.R
 import com.example.mathtips.data.CalculationChild
 import com.example.mathtips.databinding.ActivitySecondBinding
-import com.example.mathtips.ui.viewmodel.MainViewModel
 import com.example.mathtips.utils.Constant
 
 class SecondActivity : AppCompatActivity() {

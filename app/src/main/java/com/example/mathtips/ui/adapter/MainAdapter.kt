@@ -1,10 +1,12 @@
 package com.example.mathtips.ui.adapter
 
+import android.util.Log
 import com.example.mathtips.R
 import com.example.mathtips.data.Calculation
 import com.example.mathtips.data.CalculationChild
 import com.example.mathtips.databinding.ItemCaculationBinding
 import com.example.mathtips.databinding.ItemCaculationChildBinding
+import com.example.mathtips.utils.SharePrefsIplm
 import com.sangtb.androidlibrary.base.BaseRecyclerViewAdapter
 
 class MainAdapter : BaseRecyclerViewAdapter<Calculation, ItemCaculationBinding>() {

@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.example.mathtips.ui.viewmodel.MainViewModel" />
     </data>
 
     <LinearLayout
@@ -23,6 +25,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp20"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:onClick="@{()->viewModel.onDropDow()}"
                 android:src="@drawable/ic_drop_down"
                 app:tint="@color/white" />
 
@@ -30,6 +35,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/dp20"
+                android:onClick="@{()->viewModel.onDropUp()}"
+                android:foreground="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
                 android:src="@drawable/ic_drop_up"
                 app:tint="@color/white" />
 

@@ -7,4 +7,7 @@ object Constant {
     const val EASY = "easy"
     const val MEDIUM = "medium"
     const val DIFFICULTY_LEVEL = "difficultylevel"
+
+    const val KEY_RATE = "KEY_SCORE"
+    const val KEY_TOTAL_ANSWER = "KEY_SCORE"
 }

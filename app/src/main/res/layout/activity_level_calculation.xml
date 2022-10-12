@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <import type="androidx.core.content.ContextCompat" />
 
         <variable
@@ -13,6 +12,9 @@
         <variable
             name="color"
             type="Integer" />
+        <variable
+            name="dataDisplay"
+            type="com.example.mathtips.ui.DataDisplay" />
 
     </data>
 
@@ -93,8 +95,8 @@
                 app:name='@{"Dễ"}'
                 app:colorItem="@{color}"
                 android:id="@+id/item_level_calculation1"
-                app:score="@{0}"
-                app:rate="@{3}"/>
+                app:score="@{dataDisplay.score1}"
+                app:rate="@{dataDisplay.rate1}"/>
 
             <include
                 layout="@layout/item_level_calculation"
@@ -105,15 +107,15 @@
                 app:name='@{"Trung bình"}'
                 android:id="@+id/item_level_calculation2"
                 app:colorItem="@{color}"
-                app:score="@{0}"
-                app:rate="@{3}"/>
+                app:score="@{dataDisplay.score2}"
+                app:rate="@{dataDisplay.rate2}"/>
 
             <include layout="@layout/item_level_calculation"
                 app:name='@{"Khó"}'
                 app:colorItem="@{color}"
-                app:score="@{0}"
+                app:score="@{dataDisplay.score3}"
                 android:id="@+id/item_level_calculation3"
-                app:rate="@{3}"/>
+                app:rate="@{dataDisplay.rate3}"/>
 
         </LinearLayout>
 

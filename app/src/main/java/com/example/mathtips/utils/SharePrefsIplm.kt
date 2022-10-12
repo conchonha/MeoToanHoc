@@ -12,4 +12,8 @@ class SharePrefsIplm : SharePrefs() {
     override val editor: SharedPreferences.Editor by lazy { sharedPref.edit() }
 
     fun getTotalAnswer(key : String) = sharedPref.getInt(key,0)
+
+    fun getTotalScoreFromIdAndLevel(key : String) = sharedPref.getInt(key,0)
+
+    fun getRateScoreFromIdAndLevel(key : String) = sharedPref.getInt(key,0)
 }

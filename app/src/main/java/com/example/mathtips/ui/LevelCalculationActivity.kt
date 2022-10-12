@@ -29,6 +29,7 @@ class LevelCalculationActivity : AppCompatActivity() {
         color1 = intent.getIntExtra(Constant.KEY_COLOR,R.color.plus)
         window.statusBarColor = ContextCompat.getColor(baseContext,color1)
 
+
         binding.apply {
             color = color1
             itemLevelCalculation1.cardBg.setOnClickListener {
@@ -45,6 +46,19 @@ class LevelCalculationActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val dataDPL = DataDisplay(
+            viewModel.getSoreFromIdAndLevel(data1,Constant.EASY),
+            viewModel.getSoreFromIdAndLevel(data1,Constant.MEDIUM),
+            viewModel.getSoreFromIdAndLevel(data1,Constant.DIFFICULTY_LEVEL),
+            viewModel.getRateFromIdAndLevel(data1,Constant.EASY),
+            viewModel.getRateFromIdAndLevel(data1,Constant.MEDIUM),
+            viewModel.getRateFromIdAndLevel(data1,Constant.DIFFICULTY_LEVEL)
+        )
+        binding.dataDisplay = dataDPL
+    }
+
     fun backScreen(v : View){
         finish()
     }
@@ -58,3 +72,5 @@ class LevelCalculationActivity : AppCompatActivity() {
     }
 
 }
+
+data class DataDisplay(val score1 : Int,val score2 : Int,val score3 : Int,val rate1 : Int,val rate2 : Int,val rate3 : Int)
