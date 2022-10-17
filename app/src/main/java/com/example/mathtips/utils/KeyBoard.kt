@@ -86,9 +86,9 @@ class KeyBoard(context : Context, attributes: AttributeSet) : ConstraintLayout(c
 
         if(number is Int){
             listAnswer[0] = number
-            listAnswer[1] = number + Random.nextInt(20)
-            listAnswer[2] = number + Random.nextInt(20)
-            listAnswer[3] = number + Random.nextInt(5)
+            listAnswer[1] = number + Random.nextInt(1,10)
+            listAnswer[2] = number + Random.nextInt(10,20)
+            listAnswer[3] = number + Random.nextInt(20,25)
         }else{
             listAnswer[0] = number
             listAnswer[1] = number.toDouble() + Random.nextDouble(number.toDouble())

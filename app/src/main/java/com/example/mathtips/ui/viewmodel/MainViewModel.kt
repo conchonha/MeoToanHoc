@@ -168,6 +168,8 @@ class MainViewModel : ViewModel(), KeyboardListener {
         keyBoardType.value = type
         if (keyBoardType.value == KeyBoardType.TYPE_TRUE_FALSE) {
             textChangeTypeTrueFalse()
+        }else{
+            clearTextKeyboard?.invoke()
         }
         indexTypeKeyBoard++
     }
@@ -175,7 +177,9 @@ class MainViewModel : ViewModel(), KeyboardListener {
     private fun textChangeTypeTrueFalse(){
         listOf(answerKQ, Random.nextInt(answerKQ, answerKQ + 19)).let {
             it.shuffled()
-            textChange.value =  it.shuffled().random().toString()
+            if (keyBoardType.value == KeyBoardType.TYPE_TRUE_FALSE){
+                textChange.value =  it.shuffled().random().toString()
+            }
         }
     }
 
@@ -388,13 +392,16 @@ class MainViewModel : ViewModel(), KeyboardListener {
 
     private fun getValueAB(from: Int, util: Int): Pair<Int, Int> {
         while (true) {
-            var a = Random.nextInt(from, util)
-            var b = Random.nextInt(from, util)
+            val a = Random.nextInt(from, util)
+            val b = Random.nextInt(from, util)
 
-            var c = a.toString().substring(1, 2).toInt()
-            var d = b.toString().substring(1, 2).toInt()
+            val c = a.toString().substring(1, 2).toInt()
+            val d = b.toString().substring(1, 2).toInt()
 
-            if (c + d == 10) {
+            var e = a.toString().substring(0, 1).toInt()
+            val f = b.toString().substring(0, 1).toInt()
+
+            if (c + d == 10 && e == f) {
                 return Pair(a, b)
             }
         }
