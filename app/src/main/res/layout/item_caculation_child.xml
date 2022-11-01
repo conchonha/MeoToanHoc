@@ -73,7 +73,7 @@
             android:layout_alignBottom="@+id/checkBox"
             android:layout_toLeftOf="@+id/checkBox"
             android:gravity="center_vertical"
-            android:text='@{calculation.component3() +"\\10"}'
+            android:text='@{calculation.component3() +"\\30"}'
             android:textColor="@{ContextCompat.getColor(context,color)}" />
 
     </RelativeLayout>

@@ -14,6 +14,7 @@ import com.example.mathtips.data.CalculationChild
 import com.example.mathtips.databinding.ActivitySecondBinding
 import com.example.mathtips.utils.Constant
 
+//Màn hình display được chuyển sang từ MainActivity
 class SecondActivity : AppCompatActivity() {
     private lateinit var binding : ActivitySecondBinding
 
@@ -21,10 +22,14 @@ class SecondActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_second)
 
+        //lấy data được gửi sang từ MainActivity
         val data = intent.getSerializableExtra(Constant.KEY_CALCULATION_CHILD) as CalculationChild
         val color1 = intent.getIntExtra(Constant.KEY_COLOR,R.color.plus)
+
+        //set status bar color
         window.statusBarColor = ContextCompat.getColor(baseContext,color1)
 
+        //set data vào view để display := activity_second.xml
         binding.apply {
             color = color1
             calculationChild = data
@@ -36,6 +41,7 @@ class SecondActivity : AppCompatActivity() {
                 })
             }
 
+            //khi bấm next -> di chuyển vào màn LevelActivity và gửi kèm data sang
             nextPage.setOnClickListener {
                 startActivity(Intent(this@SecondActivity,LevelCalculationActivity::class.java).apply {
                     putExtra(Constant.KEY_CALCULATION_CHILD,data)
@@ -46,6 +52,7 @@ class SecondActivity : AppCompatActivity() {
 
     }
 
+    // back về màn hình trước MainActivity
     fun backScreen(v : View){
         finish()
     }

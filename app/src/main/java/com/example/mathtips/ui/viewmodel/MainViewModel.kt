@@ -1,6 +1,8 @@
 package com.example.mathtips.ui.viewmodel
 
+import android.app.Application
 import android.util.Log
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.mathtips.R
@@ -16,8 +18,10 @@ import kotlinx.coroutines.*
 import kotlin.properties.Delegates
 import kotlin.random.Random
 
-class MainViewModel : ViewModel(), KeyboardListener {
+class MainViewModel(application: Application) : AndroidViewModel(application), KeyboardListener {
     private val sharePrefs = SharePrefsIplm()
+    private var level: String = ""
+
     val content = MutableLiveData<String>()
     val progress = MutableLiveData(100)
     val rateCount = MutableLiveData(3)
@@ -25,23 +29,22 @@ class MainViewModel : ViewModel(), KeyboardListener {
     val score = MutableLiveData(0)
     val typeSquaring = MutableLiveData(false)
     val levelCalculation = MutableLiveData("")
-    val mtbListCalculation = MutableLiveData< MutableList<Calculation>>()
+    val mtbListCalculation = MutableLiveData<MutableList<Calculation>>()
     val showDialog = SingleLiveEvent<Boolean>()
 
-    private var level: String = ""
     private var indexTypeKeyBoard = 0
     private lateinit var _calculationChild: CalculationChild
     var timeRepeat: Long = 100
+
     var job: Job? = null
     var answerKQ: Int = 0
     var color by Delegates.notNull<Int>()
 
     val symbolCalculation = MutableLiveData<String>()
-    private val lisSquaring = listOf(5, 15, 25, 35, 45, 55, 65, 75, 85, 95)
     val a = MutableLiveData<Int?>()
     val b = MutableLiveData<Int?>()
 
-
+    //function chỉ được gọi ở màn hình chính (MainActivity) Open ListItem(Cộng/Trừ/Nhân/Chia)
     fun onDropDow() {
         val listTmp = getList().map {
             it.apply {
@@ -52,6 +55,7 @@ class MainViewModel : ViewModel(), KeyboardListener {
         mtbListCalculation.postValue(listTmp)
     }
 
+    //function chỉ được gọi ở màn hình chính (MainActivity) drop ListItem(Cộng/Trừ/Nhân/Chia)
    fun onDropUp(){
        val listTmp = getList().map {
            it.apply {
@@ -62,103 +66,52 @@ class MainViewModel : ViewModel(), KeyboardListener {
        mtbListCalculation.postValue(listTmp)
    }
 
-    fun getList() =  mutableListOf(
-        Calculation(
-            color = R.color.plus,
-            R.drawable.plus,
-            "Phép Cộng",
-            list = listOf(
-                CalculationChild(
-                    EnumCalculation.PLUSH, "Cộng thuộc lòng",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.PLUSH.name),
-                    listOf(R.drawable.congthuoclong)
-                ),
-                CalculationChild(
-                    EnumCalculation.PLUSH_TYPE_1,
-                    "Cộng Các Số Gần Hàng Trăm",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.PLUSH_TYPE_1.name),
-                    listOf(R.drawable.conghangtram1, R.drawable.conghangtram2)
-                ),
-            )
-        ),
-        Calculation(
-            color = R.color.minus,
-            R.drawable.minus,
-            "Phép Trừ",
-            list = listOf(
-                CalculationChild(
-                    EnumCalculation.MINUS, "Trừ thuộc lòng",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.MINUS.name),
-                    listOf(R.drawable.truthuoclong)
-                ),
-                CalculationChild(
-                    EnumCalculation.MINUS_TYPE_1, "Trừ Các Số Gần Hàng Trăm",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.MINUS_TYPE_1.name),
-                    listOf(R.drawable.truphantram1, R.drawable.truphantram2)
-                )
-            )
-        ),
-        Calculation(
-            color = R.color.multiplication,
-            R.drawable.nhan,
-            "Phép Nhân",
-            list = listOf(
-                CalculationChild(
-                    EnumCalculation.MULTIPLICATION, "Nhân số có 2 chữ số với 11",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.MULTIPLICATION.name),
-                    listOf(R.drawable.nhan_11_1, R.drawable.nhan_11_2)
-                ),
-                CalculationChild(
-                    EnumCalculation.MULTIPLICATION_TYPE_1,
-                    "Nhân các số có hai chữ số cùng chữ số hàng chục và đơn vị cộng lại bằng 10",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.MULTIPLICATION_TYPE_1.name),
-                    listOf(R.drawable.nhan_type_1, R.drawable.nhan_type_2)
-                )
-            )
-        ),
-        Calculation(
-            color = R.color.squaring,
-            R.drawable.ic_squaring,
-            "Phép Bình Phương",
-            list = listOf(
-                CalculationChild(
-                    EnumCalculation.SQUARING, "bình phương các số kết thúc bằng 5",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.SQUARING.name),
-                    listOf(R.drawable.binhphuong_type_1_1, R.drawable.binhphuong_type_1_2)
-                ),
-                CalculationChild(
-                    EnumCalculation.SQUARING_TYPE_1, "bình phương các số từ 10 - 19",
-                    totalAnswer = sharePrefs.getTotalAnswer(EnumCalculation.SQUARING_TYPE_1.name),
-                    listOf(R.drawable.binhphuong_type_2_1, R.drawable.binhphuong_type_2_2)
-                )
-            )
-        )
-    )
+    //Chương trình chạy chủ yếu được quản lý và handle bởi List này dựa vào các constant define cho mỗi level (data display dc defined ở mục model)
+    fun getList() = Constant.list.map {
+        it.list.map { element->
+            element.totalAnswer = sharePrefs.getTotalAnswer(element.id.name)
+            element
+        }
+        it
+    }.toMutableList()
 
+    //Mỗi Chắc năng có 3 level (Khó dễ trungbinhg)/ func này dùng để lấy điểm của mỗi chức năng dựa vào
+    // key : EnumCalculation và value là số điểm người dùng chơi được biến: score
     fun getSoreFromIdAndLevel(calculationChild: CalculationChild, level: String) =
         sharePrefs.getTotalScoreFromIdAndLevel("${calculationChild.id.name}$level")
 
+    //Mỗi Chắc năng có 3 level (Khó - dễ - trungbinh)/ func này dùng để lấy số sao của mỗi chức năng dựa vào
+    // key : EnumCalculation + Constant.KEY_RATE và value là số sao người dùng chơi được biến: rateCount
     fun getRateFromIdAndLevel(calculationChild: CalculationChild, level: String) =
         sharePrefs.getTotalScoreFromIdAndLevel("${calculationChild.id.name}$level${Constant.KEY_RATE}")
 
+    // func dùng để start processBar func này chỉ chạy ở màn CalculationActivity
+    // for 100 đại diện 100 số điểm mỗi câu hỏi max = 100
+    //  delay(timeRepeat) đại diện thời gian cho mỗi câu hỏi là bao nhiêu giây biến: timeRepeat
+    //rateCount.value <= 0 chứng minh số sao tối đa cho 1 vòng đã hết end game
     private fun startProgressbar() {
         job = CoroutineScope(Dispatchers.IO).launch {
             for (i in 100 downTo 0) {
                 delay(timeRepeat)
                 progress.postValue(i)
                 if (i == 0) {
-                    if (rateCount.value!! > 0) {
-                        rateCount.postValue(rateCount.value!! - 1)
+                    rateCount.postValue(rateCount.value!! - 1)
+                    if(rateCount.value!! <= 0){
+                        job?.cancel()
+                        finishQuestionAndAnswer()
                     }
                 }
             }
         }
     }
 
+    //có 3 loại bàn phím: default : display bàn phím số
+    // indexTypeKeyBoard = 1: bàn phím giữa := 2 bàn phím true false (mỗi index tương đương constant được define ở keyBoard KeyBoardType.TYPE_KEYBOARD)
     fun setTypeKeyBoard() {
         if (indexTypeKeyBoard == 3) {
             indexTypeKeyBoard = 0
         }
+
         Log.d("SangTB", "setTypeKeyBoard: $indexTypeKeyBoard")
         val type = when (indexTypeKeyBoard) {
             0 -> KeyBoardType.TYPE_KEYBOARD
@@ -174,28 +127,37 @@ class MainViewModel : ViewModel(), KeyboardListener {
         indexTypeKeyBoard++
     }
 
+    //trường hợp keyBoard type = true or false: kết quả xẽ được random dựa vào 2 trường hợp đúng hoặc sai (kết quả random được lưu listOf)
+    //it.shuffled()
     private fun textChangeTypeTrueFalse(){
         listOf(answerKQ, Random.nextInt(answerKQ, answerKQ + 19)).let {
-            it.shuffled()
             if (keyBoardType.value == KeyBoardType.TYPE_TRUE_FALSE){
                 textChange.value =  it.shuffled().random().toString()
             }
         }
     }
 
+    //Mỗi View (Cộng-trừ-nhân-bình phương) 1 object lưu trữ giá trị: CalculationChild - màn LevelCalculation lưu level
+    // func này dùng để truyền dữ liệu từ CalculationActivity ->ViewModel để handle logic code
     fun setCalculationChild(value: CalculationChild, level1: String, color1: Int) {
         _calculationChild = value
         level = level1
         color = color1
-        val value = when (level) {
+        levelCalculation.value = when (level) {
             Constant.EASY -> "Dễ"
             Constant.MEDIUM -> "Trung bình"
             else -> "Khó"
         }
-        levelCalculation.postValue(value)
+
         checkType()
     }
 
+    //func chịu trách nhiệm sử lý chính bao gồm handle logic ở mỗi level (Khó - dễ - trung bình)
+    // answerKQ là kết quả đúng giữa mỗi câu hỏi (timeRepead = 150 => 15s)
+    // Random.nextInt tự tạo ra 1 số bất kỳ
+    //EnumCalculation. đại diện cho type(phân biệt các phép tính, mỗi phép có 1 type)
+    // content tiêu đề của màn cuối mỗi loại phép tính dc gán = mỗi tên khác nhau
+    // symbolCalculation ký hiệu của phép tính (+/-/*/^)
     private fun checkType() {
         startProgressbar()
         when (_calculationChild.id) {
@@ -229,18 +191,18 @@ class MainViewModel : ViewModel(), KeyboardListener {
                 when (level) {
                     Constant.EASY -> {
                         timeRepeat = 100
-                        a.value = Random.nextInt(100)
-                        b.value = Random.nextInt(100)
+                        a.value = Random.nextInt(300)
+                        b.value = Constant.lisMinusPlushType2Level1.random()
                     }
                     Constant.MEDIUM -> {
                         timeRepeat = 70
-                        a.value = Random.nextInt(200)
-                        b.value = Random.nextInt(200)
+                        a.value = Random.nextInt(300,500)
+                        b.value = Constant.lisMinusPlushType2Level2.random()
                     }
                     Constant.DIFFICULTY_LEVEL -> {
                         timeRepeat = 40
-                        a.value = Random.nextInt(300)
-                        b.value = Random.nextInt(300)
+                        a.value = Random.nextInt(500,800)
+                        b.value = Constant.lisMinusPlushType2Level3.random()
                     }
                 }
                 answerKQ = a.value!! + b.value!!
@@ -277,18 +239,18 @@ class MainViewModel : ViewModel(), KeyboardListener {
                 when (level) {
                     Constant.EASY -> {
                         timeRepeat = 150
-                        a.value = Random.nextInt(100, 150)
-                        b.value = Random.nextInt(100)
+                        a.value = Constant.lisMinusPlushType2Level1.random()
+                        b.value = Random.nextInt(0,a.value!!-1)
                     }
                     Constant.MEDIUM -> {
                         timeRepeat = 100
-                        a.value = Random.nextInt(200, 250)
-                        b.value = Random.nextInt(200)
+                        a.value = Constant.lisMinusPlushType2Level2.random()
+                        b.value = Random.nextInt(250,a.value!!-1)
                     }
                     Constant.DIFFICULTY_LEVEL -> {
                         timeRepeat = 50
-                        a.value = Random.nextInt(300, 350)
-                        b.value = Random.nextInt(300)
+                        a.value = Constant.lisMinusPlushType2Level2.random()
+                        b.value = Random.nextInt(550,a.value!!-1)
                     }
                 }
                 answerKQ = a.value!! - b.value!!
@@ -325,19 +287,19 @@ class MainViewModel : ViewModel(), KeyboardListener {
                 when (level) {
                     Constant.EASY -> {
                         timeRepeat = 100
-                        val value = getValueAB(10, 30)
+                        val value = getValueMultiplicationABFromType2(10, 30)
                         a.value = value.first
                         b.value = value.second
                     }
                     Constant.MEDIUM -> {
                         timeRepeat = 70
-                        val value = getValueAB(10, 50)
+                        val value = getValueMultiplicationABFromType2(10, 50)
                         a.value = value.first
                         b.value = value.second
                     }
                     Constant.DIFFICULTY_LEVEL -> {
                         timeRepeat = 40
-                        val value = getValueAB(10, 100)
+                        val value = getValueMultiplicationABFromType2(10, 100)
                         a.value = value.first
                         b.value = value.second
                     }
@@ -346,17 +308,26 @@ class MainViewModel : ViewModel(), KeyboardListener {
                 answer.value = answerKQ
                 textChangeTypeTrueFalse()
             }
+            EnumCalculation.MULTIPLICATION_TYPE_2 -> multiplicationTable(2)
+            EnumCalculation.MULTIPLICATION_TYPE_3 -> multiplicationTable(3)
+            EnumCalculation.MULTIPLICATION_TYPE_4 -> multiplicationTable(4)
+            EnumCalculation.MULTIPLICATION_TYPE_5 -> multiplicationTable(5)
+            EnumCalculation.MULTIPLICATION_TYPE_6 -> multiplicationTable(6)
+            EnumCalculation.MULTIPLICATION_TYPE_7 -> multiplicationTable(7)
+            EnumCalculation.MULTIPLICATION_TYPE_8 -> multiplicationTable(8)
+            EnumCalculation.MULTIPLICATION_TYPE_9 -> multiplicationTable(9)
             EnumCalculation.SQUARING -> {
                 symbolCalculation.postValue("^2")
                 typeSquaring.postValue(true)
                 setTimeRepeat()
-                a.value =  lisSquaring.shuffled().random()
+                a.value = Constant.lisSquaring.shuffled().random()
                 answerKQ = a.value!! * a.value!!
                 answer.value = answerKQ
                 textChangeTypeTrueFalse()
             }
             else -> {
                 typeSquaring.postValue(true)
+                symbolCalculation.postValue("^2")
                 setTimeRepeat()
                 a.value = Random.nextInt(10, 19)
                 answerKQ = a.value!! * a.value!!
@@ -366,6 +337,7 @@ class MainViewModel : ViewModel(), KeyboardListener {
         }
     }
 
+    // set thời gian mỗi câu hỏi 100 = 10s / 70 = 7s / 40 = 4s
     private fun setTimeRepeat() {
         when (level) {
             Constant.EASY -> {
@@ -380,6 +352,7 @@ class MainViewModel : ViewModel(), KeyboardListener {
         }
     }
 
+    //show dialog và lưu lại các kết quả khi kết thúc game (lưu sao / điểm / totalAnswer đã trả lời dc)
     private fun finishQuestionAndAnswer() {
         sharePrefs.put(_calculationChild.id.name, totalAnswer.value!!)
         sharePrefs.put("${_calculationChild.id.name}$level", score.value!!)
@@ -390,7 +363,8 @@ class MainViewModel : ViewModel(), KeyboardListener {
         showDialog.postValue(true)
     }
 
-    private fun getValueAB(from: Int, util: Int): Pair<Int, Int> {
+    //get A và B của Phép nhân loại 2 số có hai chữ số cùng chữ...
+    private fun getValueMultiplicationABFromType2(from: Int, util: Int): Pair<Int, Int> {
         while (true) {
             val a = Random.nextInt(from, util)
             val b = Random.nextInt(from, util)
@@ -407,11 +381,20 @@ class MainViewModel : ViewModel(), KeyboardListener {
         }
     }
 
+
+    //dùng đẻ display data trên màn hình : textChange->giá trị của phép tính (kết quả cuối)
+    //keyBoardType: loại bàn phím hiển thị
+    //answer dùng để gửi vào bàn phím để sửa lý (keyboard)
     override val answer: MutableLiveData<Number> = MutableLiveData(5)
     override val keyBoardType: MutableLiveData<KeyBoardType> =
         MutableLiveData(KeyBoardType.TYPE_KEYBOARD)
     override val textChange: MutableLiveData<String> = MutableLiveData("?")
 
+    //khi người dùng nhập bàn phím xẽ bắn sự kiện sang func này
+    // func này kiểm tra xem kết quả đúng hay không -> nếu xóa hết => display ?
+    // value == answerKQ => đã nhập kết quả đúng
+    // totalAnswer.value == 10: số lượng câu hỏi đúng đạt 10 => finishQuestionAndAnswer() kết thúc game
+    // số lượng câu hỏi đúng < 10 => tiếp tục game
     override fun onTextChange(value: String) {
         super.onTextChange(value)
         if (value.isEmpty()) {
@@ -434,6 +417,8 @@ class MainViewModel : ViewModel(), KeyboardListener {
         }
     }
 
+    //type keyboard true / false -> chọn đúng thì func này dc gọi
+    // thực hiện kiểm tra giống onTextChange
     override fun answerCorrect() {
         Log.d("SangTB", "answerCorrect: ")
         if (totalAnswer.value == 10) {
@@ -447,5 +432,33 @@ class MainViewModel : ViewModel(), KeyboardListener {
         score.postValue(score.value!! + progress.value!!)
     }
 
+    // dùng để remove text của keyboard
     override var clearTextKeyboard: (() -> Unit)? = null
+
+    // handle bảng cửu chương 2->9
+    // giống func checkType
+    private fun multiplicationTable(int: Int){
+            content.postValue("Bảng Cửu Chương $int")
+            symbolCalculation.postValue("x")
+            when (level) {
+                Constant.EASY -> {
+                    timeRepeat = 150
+                    a.value = Random.nextInt(1,9)
+                    b.value = int
+                }
+                Constant.MEDIUM -> {
+                    timeRepeat = 100
+                    a.value = Random.nextInt(1,9)
+                    b.value = int
+                }
+                Constant.DIFFICULTY_LEVEL -> {
+                    timeRepeat = 50
+                    a.value = Random.nextInt(1,9)
+                    b.value = int
+                }
+            }
+            answerKQ = a.value!! * b.value!!
+            answer.value = answerKQ
+            textChangeTypeTrueFalse()
+        }
 }

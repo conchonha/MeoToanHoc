@@ -43,13 +43,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.mtbListCalculation.observe(this){
+            Log.d("SangTB", "onCreate: $it")
             adapter.updateItems(it)
+            adapter.notifyDataSetChanged()
         }
     }
 
     override fun onResume() {
-        adapter.updateItems(viewModel.getList())
         super.onResume()
+        adapter.updateItems(viewModel.getList())
     }
 
     private fun setColor(color : Int){

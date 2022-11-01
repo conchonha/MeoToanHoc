@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -152,6 +153,7 @@
                     android:textStyle="bold"/>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
+
         <RelativeLayout
             android:id="@+id/process"
             android:layout_width="match_parent"
@@ -164,6 +166,7 @@
                 android:max="100"
                 android:background="@{ContextCompat.getColor(context,color)}"
                 android:progress="@{viewModel.progress}"
+                app:indicatorColor="@color/red"
                 android:layout_height="wrap_content"/>
 
             <ImageView
@@ -173,7 +176,8 @@
                 android:layout_marginTop="@dimen/dp15"
                 android:onClick="@{()->viewModel.setTypeKeyBoard()}"
                 android:src="@drawable/ic_change_type"
-                android:tint="@{ContextCompat.getColor(context,color)}" />
+                android:tint="@{ContextCompat.getColor(context,color)}"
+                tools:ignore="UseAppTint" />
 
             <TextView
                 android:layout_width="wrap_content"

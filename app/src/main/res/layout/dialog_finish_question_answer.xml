@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <import type="androidx.core.content.ContextCompat"/>
         <variable
             name="viewModel"
             type="com.example.mathtips.ui.viewmodel.MainViewModel" />
+        <import type="android.view.View"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -20,6 +22,7 @@
             android:orientation="vertical"
             android:paddingVertical="@dimen/dp10"
             android:gravity="center">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -27,6 +30,16 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@{ContextCompat.getColor(context,viewModel.color)}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Game over"
+                android:textSize="14sp"
+                android:visibility="@{viewModel.rateCount &lt;=0? View.VISIBLE : View.GONE}"
+                android:textColor="@color/red"
+                android:layout_marginVertical="@dimen/dp5"
+                />
 
             <androidx.cardview.widget.CardView
                 android:layout_width="@dimen/dp40"
@@ -45,7 +58,7 @@
                         android:layout_height="match_parent"
                         android:textSize="14sp"
                         android:gravity="center"
-                        android:text="@{String.valueOf(viewModel.score)}"
+                        android:text='@{String.valueOf(viewModel.score) }'
                         android:textColor="@{ContextCompat.getColor(context,viewModel.color)}"/>
                 </androidx.cardview.widget.CardView>
             </androidx.cardview.widget.CardView>
@@ -60,7 +73,8 @@
                     android:layout_height="wrap_content"
                     app:index= "@{1}"
                     app:rate= "@{viewModel.rateCount}"
-                    android:tint="@{ContextCompat.getColor(context,viewModel.color)}"/>
+                    android:tint="@{ContextCompat.getColor(context,viewModel.color)}"
+                    tools:ignore="UseAppTint" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -69,14 +83,14 @@
                     app:index= "@{2}"
                     app:rate= "@{viewModel.rateCount}"
                     android:tint="@{ContextCompat.getColor(context,viewModel.color)}"
-                    />
+                    tools:ignore="UseAppTint" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:index= "@{3}"
                     app:rate= "@{viewModel.rateCount}"
                     android:tint="@{ContextCompat.getColor(context,viewModel.color)}"
-                    />
+                    tools:ignore="UseAppTint" />
             </LinearLayout>
 
             <LinearLayout

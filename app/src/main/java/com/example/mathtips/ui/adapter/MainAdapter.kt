@@ -43,7 +43,7 @@ class MainAdapter : BaseRecyclerViewAdapter<Calculation, ItemCaculationBinding>(
         ) {
             val calculationChild = items[position]
             holder.binding.apply {
-                index = "0${position+ 1}."
+                index = if(position < 9) "0${position+ 1}." else "${position+ 1}."
                 color = color1
                 calculation = calculationChild
 
